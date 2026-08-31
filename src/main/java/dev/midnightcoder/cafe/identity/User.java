@@ -1,8 +1,9 @@
-package dev.midnightcoder.cafe.identity.internal;
+package dev.midnightcoder.cafe.identity;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -24,12 +25,21 @@ public class User {
 
     private Boolean enabled;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id")
+    )
+    @Column(name = "role_names")
+    private Set<String> roleNames;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
+        this.enabled = true;
     }
 
     @PreUpdate
@@ -51,5 +61,13 @@ public class User {
 
     public void setEncryptedPassword(String encryptedPassword) {
         this.encryptedPassword = encryptedPassword;
+    }
+
+    public Set<String> getRoleNames() {
+        return roleNames;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }

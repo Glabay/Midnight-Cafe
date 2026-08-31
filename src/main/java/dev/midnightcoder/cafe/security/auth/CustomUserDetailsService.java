@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Service
 @NullMarked
-class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
     private final UserLookup userLookup;
 
     CustomUserDetailsService(UserLookup userLookup) {
@@ -32,10 +32,6 @@ class CustomUserDetailsService implements UserDetailsService {
         var cachedUser = userLookup.findByIdentity(username)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return new User(
-            cachedUser.getUsername(),
-            cachedUser.getEncryptedPassword(),
-            List.of(new SimpleGrantedAuthority("ROLE_USER"))
-        );
+        return new MidnightUserDetails(cachedUser);
     }
 }

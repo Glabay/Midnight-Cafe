@@ -1,7 +1,5 @@
 package dev.midnightcoder.cafe.identity;
 
-import dev.midnightcoder.cafe.identity.internal.User;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
