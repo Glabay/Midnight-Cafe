@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Midnight Cafe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/midnight-cafe.css}">
+</head>
+<body>
+
+    <!-- Ambient Glowing Background Lights -->
+    <div th:fragment="ambient-lights">
+        <div class="ambient-glow glow-top-left"></div>
+        <div class="ambient-glow glow-bottom-right"></div>
+        <div class="ambient-glow glow-middle-right"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header th:fragment="navbar" class="navbar">
+        <div class="container nav-wrapper">
+            <a th:href="@{/}" class="brand-logo">
+                <div class="logo-icon-wrap">
+                    <svg class="logo-icon" viewBox="0 0 24 24">
+                        <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                        <line x1="6" y1="1" x2="6" y2="4"></line>
+                        <line x1="10" y1="1" x2="10" y2="4"></line>
+                        <line x1="14" y1="1" x2="14" y2="4"></line>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Midnight Cafe</span>
+                    <span class="brand-subtitle">The Midnight Coder</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a th:href="@{/}" class="nav-link">Home</a></li>
+                <li><a th:href="@{/#menu}" class="nav-link">Menu</a></li>
+                <li><a th:href="@{/#vibe}" class="nav-link">Atmosphere</a></li>
+                <li><a th:href="@{/#about}" class="nav-link">About</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <!-- If Unauthenticated -->
+                <div sec:authorize="isAnonymous()" style="display: flex; gap: 10px; align-items: center;">
+                    <a th:href="@{/login}" class="btn btn-sm btn-secondary">Sign In</a>
+                    <a th:href="@{/register}" class="btn btn-sm btn-primary">Join Cafe</a>
+                </div>
+
+                <!-- If Authenticated -->
+                <div sec:authorize="isAuthenticated()" style="display: flex; gap: 12px; align-items: center;">
+                    <div class="user-pill">
+                        <div class="user-avatar-small">
+                            <span th:text="${#authentication != null and #authentication.name != null and !#authentication.name.isEmpty() ? #authentication.name.substring(0, 1).toUpperCase() : 'U'}">U</span>
+                        </div>
+                        <span class="user-name-text" sec:authentication="name">Midnight Dev</span>
+                    </div>
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-sm btn-secondary">Sign Out</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Footer -->
+    <footer th:fragment="footer" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a th:href="@{/}" class="brand-logo">
+                        <div class="logo-icon-wrap">
+                            <svg class="logo-icon" viewBox="0 0 24 24">
+                                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                                <line x1="6" y1="1" x2="6" y2="4"></line>
+                                <line x1="10" y1="1" x2="10" y2="4"></line>
+                                <line x1="14" y1="1" x2="14" y2="4"></line>
+                            </svg>
+                        </div>
+                        <div class="brand-text">
+                            <span class="brand-title">Midnight Cafe</span>
+                            <span class="brand-subtitle">The Midnight Coder</span>
+                        </div>
+                    </a>
+                    <p class="footer-desc">
+                        A cozy late-night haven where craft coffee, lo-fi beats, and modern development come together under neon lights.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a th:href="@{/}">Home</a></li>
+                        <li><a th:href="@{/#menu}">Cafe Menu</a></li>
+                        <li><a th:href="@{/#vibe}">Atmosphere</a></li>
+                        <li><a th:href="@{/login}">Midnight Login</a></li>
+                        <li><a th:href="@{/register}">Join Cafe</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Community</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://midnightcoder.dev" target="_blank" rel="noopener">Midnight Coder</a></li>
+                        <li><a href="https://discord.gg/Glabay" target="_blank" rel="noopener">Discord: Glabay</a></li>
+                        <li><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>&copy; 2026 Midnight Cafe &bull; Glabay | The Midnight Coder</div>
+                <div class="social-links">
+                    <a href="https://midnightcoder.dev" target="_blank" rel="noopener" class="social-link">Website</a>
+                    <span>&bull;</span>
+                    <a href="https://discord.gg/Glabay" target="_blank" rel="noopener" class="social-link">Discord</a>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/js/midnight-cafe.js}"></script>
+    </footer>
+
+</body>
+</html>
